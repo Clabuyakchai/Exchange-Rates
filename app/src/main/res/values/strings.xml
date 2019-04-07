@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Exchange Rates</string>
+    <string name="list_currency_toolbar_title">Курсы валют</string>
+    <string name="list_settings_toolbar_title">Настройка валют</string>
+    <string name="settings">Настройки</string>
+    <string name="save_settings">Сохранить настройки</string>
+</resources>
