@@ -1,12 +1,11 @@
 package com.example.exchangerates.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
 import com.example.exchangerates.R
+import com.example.exchangerates.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.fragment_list_currency.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
