@@ -2,8 +2,8 @@ package com.example.exchangerates.ui.fragment.currency
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exchangerates.R
@@ -12,12 +12,11 @@ import com.example.exchangerates.ui.activity.MainActivity
 import com.example.exchangerates.ui.base.BaseFragment
 import com.example.exchangerates.ui.fragment.currency.adapter.CurrencyListAdapter
 import com.example.exchangerates.ui.fragment.setting.CurrencyListSettingsFragment
-import io.reactivex.functions.Consumer
+import com.example.exchangerates.util.DayHelper
 import kotlinx.android.synthetic.main.fragment_list_currency.*
 import kotlin.reflect.KClass
 
 class CurrencyListFragment : BaseFragment<CurrencyListFragmentViewModel>() {
-
 
     private lateinit var adapterCurrency: CurrencyListAdapter
     private lateinit var recyclerView: RecyclerView
@@ -33,17 +32,19 @@ class CurrencyListFragment : BaseFragment<CurrencyListFragmentViewModel>() {
         setupView()
     }
 
-    private fun setupView(){
+    private fun setupView() {
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
         setHasOptionsMenu(true)
 
-        adapterCurrency = CurrencyListAdapter(listOf())
+        adapterCurrency = CurrencyListAdapter()
         recyclerView = view!!.findViewById(R.id.recycler_view_currency)
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = CurrencyListAdapter(listOf())
+            adapter = adapterCurrency
         }
+        DayHelper.mutableFirstDay.observe(this, Observer { day.text = it })
+        DayHelper.mutableSecondDay.observe(this, Observer { next_day.text = it })
     }
 
     override fun onStart() {

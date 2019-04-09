@@ -1,8 +1,8 @@
 package com.example.exchangerates.data.interactor
 
-import com.example.exchangerates.data.remote.dto.CurrencyResponse
+import com.example.exchangerates.data.local.entity.CurrencyEntity
 import io.reactivex.Single
 
 interface CurrencyInteractor {
-    fun getCurrencyFromApi(onDate: String): Single<List<CurrencyResponse>>
+    fun getCurrencyFromApi(): Single<List<CurrencyEntity>>
 }

@@ -7,5 +7,5 @@ import javax.inject.Inject
 
 class CurrencyListFragmentViewModel @Inject constructor(private val currencyInteractor: CurrencyInteractor): BaseViewModel() {
 
-    val query = currencyInteractor.getCurrencyFromApi("2019-04-09").observeOn(AndroidSchedulers.mainThread())
+    val query = currencyInteractor.getCurrencyFromApi().observeOn(AndroidSchedulers.mainThread())
 }

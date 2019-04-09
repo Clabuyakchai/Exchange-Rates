@@ -5,11 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exchangerates.R
-import com.example.exchangerates.data.remote.dto.CurrencyResponse
+import com.example.exchangerates.data.local.entity.CurrencyEntity
 import kotlinx.android.synthetic.main.list_currency_item.view.*
 
-class CurrencyListAdapter(private var currencyList: List<CurrencyResponse>) :
+class CurrencyListAdapter() :
     RecyclerView.Adapter<CurrencyListAdapter.CurrencyListHolder>() {
+
+    private var currencyList = listOf<CurrencyEntity>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyListHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_currency_item, parent, false)
@@ -24,16 +26,18 @@ class CurrencyListAdapter(private var currencyList: List<CurrencyResponse>) :
         holder.bind(currencyList.get(position))
     }
 
-    fun updateList(currencyResponse: List<CurrencyResponse>) {
+    fun updateList(currencyResponse: List<CurrencyEntity>) {
         currencyList = currencyResponse
         notifyDataSetChanged()
     }
 
     class CurrencyListHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(list: CurrencyResponse) {
+        fun bind(list: CurrencyEntity) {
             itemView.apply {
-                currency_symbol.text = list.Cur_Abbreviation
-                one_currency.text = "${list.Cur_Scale} ${list.Cur_Name}"
+                currency_symbol.text = list.symbol
+                one_currency.text = "${list.scale} ${list.name}"
+                first_rate.text = list.firstRate.toString()
+                second_rate.text = list.secondRate.toString()
             }
         }
     }
