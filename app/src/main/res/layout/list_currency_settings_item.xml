@@ -6,7 +6,7 @@
         android:layout_height="wrap_content">
 
     <TextView
-            android:id="@+id/currency_symbol"
+            android:id="@+id/currency_setting_symbol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline_left"
@@ -15,11 +15,11 @@
             tools:text="USD"/>
 
     <TextView
-            android:id="@+id/one_currency"
+            android:id="@+id/one_currency_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline_left"
-            app:layout_constraintTop_toBottomOf="@id/currency_symbol"
+            app:layout_constraintTop_toBottomOf="@id/currency_setting_symbol"
             app:layout_constraintBottom_toTopOf="@id/guideline_bottom"
             android:layout_marginTop="3dp"
             tools:text="1 доллар США"/>

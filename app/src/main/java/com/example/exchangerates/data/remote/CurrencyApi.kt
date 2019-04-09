@@ -7,5 +7,5 @@ import retrofit2.http.Query
 
 interface CurrencyApi {
     @GET("API/ExRates/Rates")
-    fun getCurrencyList(@Query("onDate") onDate: String) : Single<List<CurrencyResponse>>
+    fun getCurrencyList(@Query("onDate") onDate: String,  @Query("Periodicity") periodicity: Int = 0) : Single<List<CurrencyResponse>>
 }
