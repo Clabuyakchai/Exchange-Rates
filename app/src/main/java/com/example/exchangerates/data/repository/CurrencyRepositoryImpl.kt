@@ -4,12 +4,12 @@ import com.example.exchangerates.data.local.dao.CurrencyDao
 import com.example.exchangerates.data.local.entity.CurrencyEntity
 import com.example.exchangerates.data.remote.CurrencyApi
 import com.example.exchangerates.data.remote.dto.CurrencyResponse
-import com.example.exchangerates.util.*
+import com.example.exchangerates.util.DayHelper
+import com.example.exchangerates.util.DefaultCurrencyShow
+import com.example.exchangerates.util.toApiFormat
+import com.example.exchangerates.util.toUIFormat
 import io.reactivex.Completable
-import io.reactivex.Scheduler
 import io.reactivex.Single
-import io.reactivex.functions.Action
-import io.reactivex.functions.Function3
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -23,17 +23,29 @@ class CurrencyRepositoryImpl @Inject constructor(
             .flatMap { today ->
                 currencyApi.getCurrencyList(DayHelper.tomorrow.toApiFormat())
                     .flatMap { tomorrow ->
-                        if (tomorrow.isEmpty()) {
-                            currencyApi.getCurrencyList(DayHelper.yesterday.toApiFormat())
-                                .flatMap { yesterday ->
-                                    DayHelper.firstDate = DayHelper.yesterday.toUIFormat()
-                                    DayHelper.secondDate = DayHelper.today.toUIFormat()
-                                    Single.just(convert(yesterday, today)) }
-                        } else {
-                            DayHelper.firstDate = DayHelper.today.toUIFormat()
-                            DayHelper.secondDate = DayHelper.tomorrow.toUIFormat()
-                            Single.just(convert(today, tomorrow))
-                        }
+                        currencyApi.getCurrencyList(DayHelper.yesterday.toApiFormat())
+                            .flatMap { yesterday ->
+                                if (tomorrow.isEmpty()) {
+                                    Single.just(
+                                        convert(
+                                            yesterday,
+                                            today,
+                                            DayHelper.yesterday.toUIFormat(),
+                                            DayHelper.today.toUIFormat()
+                                        )
+                                    )
+                                } else {
+                                    Single.just(
+                                        convert(
+                                            today,
+                                            tomorrow,
+                                            DayHelper.today.toUIFormat(),
+                                            DayHelper.tomorrow.toUIFormat()
+                                        )
+                                    )
+                                }
+                            }
+
                     }
             }
     }
@@ -46,7 +58,12 @@ class CurrencyRepositoryImpl @Inject constructor(
 
     override fun getAllFromDB(): Single<List<CurrencyEntity>> = currencyDao.getAll().subscribeOn(Schedulers.io())
 
-    private fun convert(firstDay: List<CurrencyResponse>, secondDay: List<CurrencyResponse>): List<CurrencyEntity> {
+    private fun convert(
+        firstDay: List<CurrencyResponse>,
+        secondDay: List<CurrencyResponse>,
+        firstDate: String,
+        secondDate: String
+    ): List<CurrencyEntity> {
         val currencyEntity = mutableListOf<CurrencyEntity>()
 
         for (i in firstDay.indices) {
@@ -58,7 +75,9 @@ class CurrencyRepositoryImpl @Inject constructor(
                     firstDay.get(i).Cur_OfficialRate,
                     secondDay.get(i).Cur_OfficialRate,
                     firstDay.get(i).Cur_Scale,
-                    false, i
+                    false, i,
+                    firstDate,
+                    secondDate
                 ).also { currency ->
                     val currencyDB = currencyDao.getCurrencyById(currency.id)
                     currency.isShow = currencyDB?.isShow ?: setDefaultCurrencyShow(currency.symbol)

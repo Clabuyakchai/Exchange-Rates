@@ -2,10 +2,11 @@ package com.example.exchangerates.data.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "currency")
-class CurrencyEntity(
+data class CurrencyEntity(
 
     @PrimaryKey
     val id: Int,
@@ -29,5 +30,11 @@ class CurrencyEntity(
     var isShow: Boolean = false,
 
     @ColumnInfo(name = "position")
-    var position: Int = 0
+    var position: Int = 0,
+
+    @ColumnInfo(name = "first_date")
+    var firstDate: String,
+
+    @ColumnInfo(name = "second_date")
+    var secondDate: String
 )

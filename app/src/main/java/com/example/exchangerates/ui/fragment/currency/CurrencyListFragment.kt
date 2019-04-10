@@ -54,8 +54,8 @@ class CurrencyListFragment : BaseFragment<CurrencyListFragmentViewModel>() {
     private fun subscribeToData() {
         viewModel.listCurrency.observe(this, Observer { list -> adapterCurrency.updateList(list) })
         viewModel.error.observe(this, Observer { error -> if (error) showError() else setHasOptionsMenu(true) })
-        first_date.text = DayHelper.firstDate
-        second_date.text = DayHelper.secondDate
+        viewModel.firstDate.observe(this, Observer { f ->  first_date.text = f})
+        viewModel.secondDate.observe(this, Observer { s ->  second_date.text = s})
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

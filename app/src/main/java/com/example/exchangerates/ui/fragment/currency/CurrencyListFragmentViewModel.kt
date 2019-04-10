@@ -12,6 +12,8 @@ class CurrencyListFragmentViewModel @Inject constructor(private val currencyInte
     BaseViewModel() {
 
     val listCurrency = MutableLiveData<List<CurrencyEntity>>()
+    val firstDate = MutableLiveData<String>()
+    val secondDate = MutableLiveData<String>()
     val error = MutableLiveData<Boolean>()
 
     fun getCurrency() = currencyInteractor
@@ -19,6 +21,8 @@ class CurrencyListFragmentViewModel @Inject constructor(private val currencyInte
         .subscribe(
             { list ->
                 error.postValue(false)
+                firstDate.postValue(list[0].firstDate)
+                secondDate.postValue(list[0].secondDate)
                 listCurrency.postValue(list) },
             { t ->
                 error.postValue(true)
