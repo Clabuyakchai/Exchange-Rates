@@ -13,6 +13,7 @@ import com.example.exchangerates.ui.base.BaseFragment
 import com.example.exchangerates.ui.fragment.currency.adapter.CurrencyListAdapter
 import com.example.exchangerates.ui.fragment.setting.CurrencyListSettingsFragment
 import com.example.exchangerates.util.DayHelper
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_list_currency.*
 import kotlin.reflect.KClass
 
@@ -42,7 +43,6 @@ class CurrencyListFragment : BaseFragment<CurrencyListFragmentViewModel>() {
             layoutManager = LinearLayoutManager(context)
             adapter = adapterCurrency
         }
-
         viewModel.getCurrency()
     }
 
@@ -52,9 +52,10 @@ class CurrencyListFragment : BaseFragment<CurrencyListFragmentViewModel>() {
     }
 
     private fun subscribeToData() {
-        DayHelper.mutableFirstDay.observe(this, Observer { day.text = it })
-        DayHelper.mutableSecondDay.observe(this, Observer { next_day.text = it })
         viewModel.listCurrency.observe(this, Observer { list -> adapterCurrency.updateList(list) })
+        viewModel.error.observe(this, Observer { error -> if (error) showError() else setHasOptionsMenu(true) })
+        first_date.text = DayHelper.firstDate
+        second_date.text = DayHelper.secondDate
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -68,6 +69,13 @@ class CurrencyListFragment : BaseFragment<CurrencyListFragmentViewModel>() {
             true
         }
         else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun showError() {
+        if (view != null) {
+            Snackbar.make(view!!, getString(R.string.error_message), Snackbar.LENGTH_LONG).show()
+        }
+        setHasOptionsMenu(false)
     }
 
     companion object {

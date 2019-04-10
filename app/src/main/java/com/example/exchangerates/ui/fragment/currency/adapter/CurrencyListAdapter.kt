@@ -35,9 +35,9 @@ class CurrencyListAdapter() :
         fun bind(list: CurrencyEntity) {
             itemView.apply {
                 currency_symbol.text = list.symbol
-                one_currency.text = "${list.scale} ${list.name}"
-                first_rate.text = list.firstRate.toString()
-                second_rate.text = list.secondRate.toString()
+                one_currency.text = itemView.resources.getString(R.string.currency_name, list.scale, list.name)
+                first_rate.text = itemView.resources.getString(R.string.currency_rate, list.firstRate)
+                second_rate.text = itemView.resources.getString(R.string.currency_rate, list.secondRate)
             }
         }
     }

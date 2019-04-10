@@ -25,7 +25,6 @@ abstract class BaseFragment<V : BaseViewModel>: Fragment(), HasSupportFragmentIn
         performDI()
         initViewModel()
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
     }
 
     protected abstract fun getViewModelClass(): KClass<V>

@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exchangerates.R
 import com.example.exchangerates.ui.activity.FragmentStack
 import com.example.exchangerates.ui.activity.MainActivity
 import com.example.exchangerates.ui.base.BaseFragment
+import com.example.exchangerates.ui.fragment.setting.adapter.CurrencyItemTouchHelper
 import com.example.exchangerates.ui.fragment.setting.adapter.CurrencyListSettingsAdapter
 import kotlinx.android.synthetic.main.fragment_list_settings.*
 import kotlin.reflect.KClass
@@ -18,6 +20,7 @@ class CurrencyListSettingsFragment : BaseFragment<CurrencyListSettingsFragmentVi
 
     private lateinit var adapterCurrency: CurrencyListSettingsAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var itemTouchHelper: ItemTouchHelper
     private val fragmentStack: FragmentStack by lazy { activity as MainActivity }
 
     override fun getViewModelClass(): KClass<CurrencyListSettingsFragmentViewModel> =
@@ -34,14 +37,16 @@ class CurrencyListSettingsFragment : BaseFragment<CurrencyListSettingsFragmentVi
     private fun setupView() {
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
+        setHasOptionsMenu(true)
 
         adapterCurrency = CurrencyListSettingsAdapter()
         recyclerView = view!!.findViewById(R.id.recycler_view_settings)
         recyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(context).apply { recycleChildrenOnDetach = true }
             adapter = adapterCurrency
         }
-
+        itemTouchHelper = ItemTouchHelper(CurrencyItemTouchHelper(adapterCurrency))
+        itemTouchHelper.attachToRecyclerView(recyclerView)
         viewModel.getCurrency()
     }
 
@@ -60,7 +65,9 @@ class CurrencyListSettingsFragment : BaseFragment<CurrencyListSettingsFragmentVi
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        R.id.save_settings -> {//TODO
+        R.id.save_settings -> {
+            viewModel.updateCurrency(adapterCurrency.currencyList)
+            fragmentStack.pop()
             true
         }
         else -> super.onOptionsItemSelected(item)

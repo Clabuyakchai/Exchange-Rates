@@ -7,15 +7,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.exchangerates.R
 import com.example.exchangerates.data.local.entity.CurrencyEntity
 import kotlinx.android.synthetic.main.list_currency_settings_item.view.*
+import java.util.*
 
 class CurrencyListSettingsAdapter : RecyclerView.Adapter<CurrencyListSettingsAdapter.CurrencyListSettingsHolder>() {
 
-    private var currencyList = listOf<CurrencyEntity>()
+    var currencyList = listOf<CurrencyEntity>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyListSettingsHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_currency_settings_item, parent, false)
+        val holder = CurrencyListSettingsHolder(view)
 
-        return CurrencyListSettingsHolder(view)
+        holder.itemView.show.setOnClickListener { v ->
+            val position = holder.adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                currencyList.get(position).isShow = !currencyList.get(position).isShow
+            } }
+        return holder
     }
 
     override fun getItemCount(): Int = currencyList.size
@@ -29,12 +36,24 @@ class CurrencyListSettingsAdapter : RecyclerView.Adapter<CurrencyListSettingsAda
         notifyDataSetChanged()
     }
 
+    fun onItemMove(fromPosition: Int, toPosition: Int) {
+        if (fromPosition < toPosition)
+            for (i in fromPosition until toPosition) {
+                Collections.swap(currencyList, i, i + 1)
+            }
+        else
+            for (i in fromPosition downTo (toPosition + 1)){
+                Collections.swap(currencyList, i, i - 1)
+            }
+        notifyItemMoved(fromPosition, toPosition)
+    }
+
     class CurrencyListSettingsHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(currencyEntity: CurrencyEntity) {
+        fun bind(list: CurrencyEntity) {
             itemView.apply {
-                currency_symbol.text = currencyEntity.symbol
-                one_currency.text = "${currencyEntity.scale} ${currencyEntity.name}"
-                show.isChecked = currencyEntity.isShow
+                currency_symbol.text = list.symbol
+                one_currency.text = itemView.resources.getString(R.string.currency_name, list.scale, list.name)
+                show.isChecked = list.isShow
             }
         }
     }

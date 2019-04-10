@@ -17,4 +17,10 @@ class CurrencyListSettingsFragmentViewModel @Inject constructor(private val curr
         .subscribe(
             { list -> listCurrency.postValue(list) },
             { t -> println(t.printStackTrace()) }).let { compositeDisposable.add(it) }
+
+    fun updateCurrency(currencyList: List<CurrencyEntity>){
+        currencyInteractor.insertChangeListCurrency(currencyList)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({}, {t -> println(t.printStackTrace()) }).let { compositeDisposable.add(it) }
+    }
 }

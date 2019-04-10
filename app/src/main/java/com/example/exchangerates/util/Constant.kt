@@ -1,15 +1,11 @@
 package com.example.exchangerates.util
 
-import androidx.lifecycle.MutableLiveData
 import java.text.SimpleDateFormat
 import java.util.*
 
 const val BASE_URL: String = "http://www.nbrb.by"
 
 object DayHelper {
-    val mutableFirstDay = MutableLiveData<String>()
-    val mutableSecondDay = MutableLiveData<String>()
-
     val today: Date = Calendar.getInstance().time
     val tomorrow: Date = Calendar.getInstance()
         .apply {
@@ -21,7 +17,8 @@ object DayHelper {
             add(Calendar.DATE, -1)
         }.time
 
-
+    var firstDate: String? = null
+    var secondDate: String? = null
 }
 
 object DefaultCurrencyShow {

@@ -4,4 +4,7 @@
     <string name="list_settings_toolbar_title">Настройка валют</string>
     <string name="settings">Настройки</string>
     <string name="save_settings">Сохранить настройки</string>
+    <string name="currency_name">%1$d %2$s</string>
+    <string name="currency_rate">%1$.4f</string>
+    <string name="error_message">Не удалось загрузить данные</string>
 </resources>

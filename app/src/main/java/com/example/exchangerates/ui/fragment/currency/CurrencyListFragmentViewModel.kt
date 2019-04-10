@@ -11,13 +11,16 @@ import javax.inject.Inject
 class CurrencyListFragmentViewModel @Inject constructor(private val currencyInteractor: CurrencyInteractor) :
     BaseViewModel() {
 
-//    val query = currencyInteractor.getCurrencyFromApi().observeOn(AndroidSchedulers.mainThread())
-
     val listCurrency = MutableLiveData<List<CurrencyEntity>>()
+    val error = MutableLiveData<Boolean>()
 
     fun getCurrency() = currencyInteractor
         .getCurrencyFromApi().observeOn(AndroidSchedulers.mainThread())
         .subscribe(
-            { list -> listCurrency.postValue(list) },
-            { t -> println(t.printStackTrace()) }).let { compositeDisposable.add(it) }
+            { list ->
+                error.postValue(false)
+                listCurrency.postValue(list) },
+            { t ->
+                error.postValue(true)
+                println(t.printStackTrace()) }).let { compositeDisposable.add(it) }
 }

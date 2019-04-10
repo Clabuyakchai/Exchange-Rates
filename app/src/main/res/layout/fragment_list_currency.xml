@@ -23,22 +23,22 @@
     </androidx.appcompat.widget.Toolbar>
 
     <TextView
-            android:id="@+id/day"
+            android:id="@+id/first_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@id/next_day"
-            app:layout_constraintTop_toTopOf="@id/next_day"
-            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toStartOf="@id/second_date"
+            app:layout_constraintTop_toTopOf="@id/second_date"
+            android:layout_marginEnd="30dp"
             style="@style/Day"
             tools:text="07.04.2019" />
 
     <TextView
-            android:id="@+id/next_day"
+            android:id="@+id/second_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
-            android:layout_marginEnd="13dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginTop="10dp"
             style="@style/Day"
             tools:text="08.04.2019" />
@@ -50,7 +50,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/day"
+            app:layout_constraintTop_toBottomOf="@id/first_date"
             android:layout_marginTop="10dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
