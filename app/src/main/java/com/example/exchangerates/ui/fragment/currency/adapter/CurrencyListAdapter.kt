@@ -26,8 +26,8 @@ class CurrencyListAdapter() :
         holder.bind(currencyList.get(position))
     }
 
-    fun updateList(currencyResponse: List<CurrencyEntity>) {
-        currencyList = currencyResponse
+    fun updateList(currencyList: List<CurrencyEntity>) {
+        this.currencyList = currencyList
         notifyDataSetChanged()
     }
 

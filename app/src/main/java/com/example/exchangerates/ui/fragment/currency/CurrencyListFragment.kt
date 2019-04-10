@@ -35,16 +35,15 @@ class CurrencyListFragment : BaseFragment<CurrencyListFragmentViewModel>() {
     private fun setupView() {
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
-        setHasOptionsMenu(true)
 
         adapterCurrency = CurrencyListAdapter()
-        recyclerView = view!!.findViewById(R.id.recycler_view_currency)
+        recyclerView = view!!.findViewById(R.id.recycler_view)
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = adapterCurrency
         }
-        DayHelper.mutableFirstDay.observe(this, Observer { day.text = it })
-        DayHelper.mutableSecondDay.observe(this, Observer { next_day.text = it })
+
+        viewModel.getCurrency()
     }
 
     override fun onStart() {
@@ -53,8 +52,9 @@ class CurrencyListFragment : BaseFragment<CurrencyListFragmentViewModel>() {
     }
 
     private fun subscribeToData() {
-        viewModel.query
-            .subscribe(adapterCurrency::updateList, Throwable::printStackTrace)
+        DayHelper.mutableFirstDay.observe(this, Observer { day.text = it })
+        DayHelper.mutableSecondDay.observe(this, Observer { next_day.text = it })
+        viewModel.listCurrency.observe(this, Observer { list -> adapterCurrency.updateList(list) })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
