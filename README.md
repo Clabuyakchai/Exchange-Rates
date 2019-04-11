@@ -1,1 +1,1 @@
-# Exchange-Rates
+# Exchange Rates
