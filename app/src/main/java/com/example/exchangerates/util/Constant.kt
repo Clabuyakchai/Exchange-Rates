@@ -16,9 +16,6 @@ object DayHelper {
         .apply {
             add(Calendar.DATE, -1)
         }.time
-
-    var firstDate: String? = null
-    var secondDate: String? = null
 }
 
 object DefaultCurrencyShow {

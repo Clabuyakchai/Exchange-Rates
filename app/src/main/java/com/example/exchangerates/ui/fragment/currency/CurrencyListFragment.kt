@@ -30,6 +30,7 @@ class CurrencyListFragment : BaseFragment<CurrencyListFragmentViewModel>() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewModel.getCurrency()
         setupView()
     }
 
@@ -43,7 +44,6 @@ class CurrencyListFragment : BaseFragment<CurrencyListFragmentViewModel>() {
             layoutManager = LinearLayoutManager(context)
             adapter = adapterCurrency
         }
-        viewModel.getCurrency()
     }
 
     override fun onStart() {
